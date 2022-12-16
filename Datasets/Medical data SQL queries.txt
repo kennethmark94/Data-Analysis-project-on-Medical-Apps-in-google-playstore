@@ -1,0 +1,63 @@
+P
+select *
+from google
+
+select *
+from google
+where "Genres" = ('Medical')
+
+------- WE extracted just the Medical Dataset since we were considering just the Medical apps---
+CREATE TABLE Medics
+AS 
+SELECT
+  *
+FROM google
+where "Genres" = ('Medical')
+------  called out our Medical dataset----
+select *
+from Medics
+
+----Question1. Top 5 Medical apps with the highest istallation; then try to acertain if they are paid for or free?
+----Medical apps with highest installs
+select "App", "Type",max( "Installs") as "highest_installs"
+from Medics
+group by "App", "Type"
+order by "highest_installs" desc
+limit 5
+
+---Question 2. Top 5 Medical apps with the highest rating and they appear to be free
+select "App", "Type",max( "Rating") as "highest_rating"
+from Medics
+group by "App", "Type"
+order by "highest_rating" desc
+limit 5
+
+-----Question 3. Top 10 most expensive apps and the versions they are compatible with?
+select "App", "Installs", "Current Ver", "Type", sum("Price") as "highest_price"
+from Medics
+where "Type" = ('Paid')
+group by "App", "Current Ver", "Type", "Installs"
+order by "highest_price" desc
+limit 10
+
+---- Question 4 : Category of people that use Medical apps the most?
+Select "App", "Content Rating", sum("Installs") as "highest_installs"
+from Medics
+group by "App", "Content Rating"
+order by "highest_installs" desc
+limit 10
+
+select *
+from Medics
+
+----Question 5. The ratio between free Medical apps to paid medical apps
+select "Type", count("App") as "total_app"
+from medics
+group by "Type"
+order by "total_app"
+
+
+
+
+
+
